@@ -57,6 +57,26 @@ public:
 	int& operator[] (int i){
 		return _data[i];
 	}
+	friend ostream& operator<< (ostream& out, DynamicArray& arr) {
+		for (int i = 0; i < arr.size(); ++i)
+			out << arr[i] << " ";
+		return out;
+	}
+	DynamicArray operator= (const DynamicArray& arr)
+	{
+		if (this == &arr)
+			return *this;
+		delete[] _data;
+		_data = new int[arr._size];
+
+		_size = arr._size;
+		_capacity = arr._capacity;
+
+		for (int i = 0; i < _size; i++)
+			_data[i] = arr._data[i];
+
+		return *this;
+	}
 
 private:
 	int _size;
@@ -66,8 +86,18 @@ private:
 
 int main() {
 	setlocale(LC_ALL,"Russian");
-	
-
+	DynamicArray mas();
+	DynamicArray arr(2);
+	DynamicArray brr(2);
+	arr[0] = 10;
+	arr[1] = 20;
+	brr[0] = 30;
+	brr[1] = 40;
+	DynamicArray crr(2);
+	crr = arr;
+	cout << arr;
+	cout << endl;
+	cout << crr;
 
 	/*vector<int>mas(10);
 	for (int i = 0; i < 10; i++)
@@ -79,8 +109,3 @@ int main() {
 
 	return 0;
 }
-ofstream& operator << (ofstream & out, DynamicArray& a) {
-		for (int i = 0; i < a.size(); ++i)
-			out << a[i] << " ";
-		return out;
-	}
