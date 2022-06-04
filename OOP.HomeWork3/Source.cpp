@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <fstream>
 using namespace std;
  
 class DynamicArray {
@@ -60,8 +59,8 @@ public:
 	auto back()const->const int& {
 		return _data[_size - 1];
 	}
-	int &data(){
-		
+	int *data(){
+		return _data;
 	}
 	bool empty() {
 		if (_size > 0) {
@@ -84,11 +83,12 @@ public:
 		}
 		_size = size;
 	}
-	void reverse() {}
+	void reverse(){}
 	void push_back(int el){
 		resize(_size + 1);
 		_data[_size - 1] = el;
 	}
+	void shrink_to_fit () {}
 	int size() const{
 		return _size;
 	}
@@ -126,14 +126,17 @@ private:
 int main() {
 	setlocale(LC_ALL,"Russian");
 	
+	/*vector<int> a(20);
+	cout << a.size;
+	cout << a.data;
+	cout << a.empty();*/
+
+
 	DynamicArray mas(10);
-	mas[0] = 5;
-	cout << mas.at(0);
-
-
-
-
-
+	/*for (int i = 0; i < mas.size(); i++)
+		mas[i] = i + 1;*/
+	cout << "mas.data(): " << mas.data();
+	cout << "\nmas.empty(): " << mas.empty();
 
 	/*DynamicArray a(10);
 	cout << "a.size: " << a.size();
