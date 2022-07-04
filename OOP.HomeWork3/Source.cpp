@@ -34,7 +34,22 @@ public:
 			delete[] _data;
 	}
 
-	
+	DynamicArray operator= (const DynamicArray& other)
+	{
+		if (this == &other)
+			return *this;
+		delete[] _data;
+		_data = new int[other._size];
+
+		_size = other._size;
+		_capacity = other._capacity;
+
+		for (int i = 0; i < _size; i++)
+			_data[i] = other._data[i];
+
+		return *this;
+	}
+	DynamicArray operator= (DynamicArray&& other) {}
 	auto at(int pos)->int& {
 		return _data[pos];
 	}
@@ -62,6 +77,9 @@ public:
 	int *data(){
 		return _data;
 	}
+	int capacity() const {
+		return _capacity;
+	}
 	bool empty() {
 		if (_size > 0) {
 			return false;
@@ -70,6 +88,35 @@ public:
 			return true;
 		}
 	}
+	int size() const {
+		return _size;
+	}
+	void reserve(int size){
+		if (size > _size) {
+			int* tmp = new int[_size];
+			for (int i = 0; i < _size; i++) {
+				tmp[i] = _data[i];
+			}
+			delete[]_data;
+			_capacity = _size + size;
+			_size = _capacity;
+			_data = new int[_capacity];
+			for (int i = 0; i < _capacity - size; i++) {
+				_data[i] = tmp[i];
+			}
+			delete[]tmp;
+		}
+	}
+	void shrink_to_fit() {}
+	void clear(){}
+	void insert(int pos, int val, int count){}
+	void erase(int first, int last){}
+	void push_back(int el) {
+		resize(_size + 1);
+		_data[_size - 1] = el;
+	}
+	void emplace_back(int pos){}
+	void pop_back(){}
 	void resize(int size) {
 		if (size > _capacity)
 		{
@@ -83,40 +130,12 @@ public:
 		}
 		_size = size;
 	}
-	void reverse(){}
-	void push_back(int el){
-		resize(_size + 1);
-		_data[_size - 1] = el;
-	}
-	void shrink_to_fit () {}
-	int size() const{
-		return _size;
-	}
-	int capacity() const {
-		return _capacity;
-	}
-	
-	DynamicArray operator= (const DynamicArray& other)
-	{
-		if (this == &other)
-			return *this;
-		delete[] _data;
-		_data = new int[other._size];
-
-		_size = other._size;
-		_capacity = other._capacity;
-
-		for (int i = 0; i < _size; i++)
-			_data[i] = other._data[i];
-
-		return *this;
-	}
-	DynamicArray operator= (DynamicArray &&other){}
+	void swap(DynamicArray other1, DynamicArray other2){}
 
 private:
-	int _size;
-	int _capacity;
-	int* _data;
+	int _size = 0;
+	int _capacity = 0;
+	int* _data = nullptr;
 
 	int* allocate(int size) {
 		int* _data = new int[size];
@@ -126,46 +145,14 @@ private:
 int main() {
 	setlocale(LC_ALL,"Russian");
 	
-	/*vector<int> a(20);
-	cout << a.size;
-	cout << a.data;
-	cout << a.empty();*/
-
-
-	DynamicArray mas(10);
-	/*for (int i = 0; i < mas.size(); i++)
-		mas[i] = i + 1;*/
-	cout << "mas.data(): " << mas.data();
-	cout << "\nmas.empty(): " << mas.empty();
-
-	/*DynamicArray a(10);
-	cout << "a.size: " << a.size();
-	cout << "\na.capacity: " << a.capacity();
-	a.resize(20);
-	a.push_back(22);
-	cout << "\n\nSize: " << a.size();
-	cout << "\nNew Capacity: " << a.capacity();*/
-	
-	/*DynamicArray mas();
-	DynamicArray arr(2);
-	DynamicArray brr(2);
-	arr[0] = 10;
-	arr[1] = 20;
-	brr[0] = 30;
-	brr[1] = 40;
-	DynamicArray crr(2);
-	crr = arr;
-	cout << arr;
-	cout << endl;
-	cout << crr;*/
-
-	/*vector<int>mas(10);
-	for (int i = 0; i < 10; i++)
-		cin >> mas[i];
-	cout << "\n[";
-	for (int i = 0; i < 10; i++)
-		cout << mas[i] << ", ";
-	cout << "\b\b]\n";*/
+	DynamicArray arr(5);
+	arr.at(0) = 0;
+	arr.at(1) = 1;
+	arr.at(2) = 2;
+	arr.at(3) = 3;
+	arr.at(4) = 4;
+	arr.reserve(5);
+	cout << arr.capacity();
 
 	return 0;
 }
